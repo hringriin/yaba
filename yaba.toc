@@ -1,10 +1,11 @@
 ## Interface: 20502
 ## Title: (Y)et (A)nother (B)am (A)ddon
 ## Author: barzh
-## Version: 1.9.7
+## Version: 20211126
 ## Notes: Plays a sound if you do critical damage.
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
+## SavedVariablesPerCharacter: yabaDmgTxtList, yabaHealTxtList, yaba_critList,yaba_outputChannelList,yaba_eventList,yaba_color,yaba_threshold,yaba_onlyOnNewMaxCrits,yaba_soundfileDamage,yaba_soundfileHeal, yaba_MinimapSettings
 
 LibDBIcon-1.0\LibStub\LibStub.lua
 LibDBIcon-1.0\CallbackHandler-1.0\CallbackHandler-1.0.lua

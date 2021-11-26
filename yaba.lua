@@ -1,8 +1,8 @@
 ﻿local _, ns = ...
-SBM = ns
+yaba = ns
 
 -- Function for event filter for CHAT_MSG_SYSTEM to suppress message of player on whisper list being offline when being whispered to
-function SBM_suppressWhisperMessage(_, _, msg, _, ...)
+function yaba_suppressWhisperMessage(_, _, msg, _, ...)
     -- TODO Suppression only works for Portuguese, English, German and French because they have the same naming format.
     -- See https://www.townlong-yak.com/framexml/live/GlobalStrings.lua
     local textWithoutName = msg:gsub("%'%a+%'", ""):gsub("  ", " ")
@@ -26,7 +26,7 @@ function SBM_suppressWhisperMessage(_, _, msg, _, ...)
     end
 
     local isNameInWhisperList = false
-    for _, w in pairs(SBM_whisperList) do
+    for _, w in pairs(yaba_whisperList) do
         if (w == name) then
             isNameInWhisperList = true
         end
@@ -35,7 +35,7 @@ function SBM_suppressWhisperMessage(_, _, msg, _, ...)
 
 end
 
-function SBM:BAM_OnLoad(self)
+function yaba:OnLoad(self)
     SlashCmdList["BAM"] = function(cmd)
         local params = {}
         local i = 1
@@ -43,27 +43,25 @@ function SBM:BAM_OnLoad(self)
             params[i] = arg
             i = i + 1
         end
-        SBM:bam_cmd(params)
+        yaba:cmd(params)
     end
-    SLASH_BAM1 = '/bam'
+    SLASH_BAM1 = '/yaba'
     self:RegisterEvent("ADDON_LOADED")
     self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-    ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", SBM_suppressWhisperMessage)
-
-    --math.randomseed(os.time())
+    ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", yaba_suppressWhisperMessage)
 end
 
-function SBM:eventHandler(_, event, arg1)
+function yaba:eventHandler(_, event, arg1)
     if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 
-        SBM:combatLogEvent()
+        yaba:combatLogEvent()
     elseif event == "ADDON_LOADED" and arg1 == "yaba" then
-        SBM_icon = nil -- Needs to be initialized to be saved
-        SBM:loadAddon() -- in yabaConfig.lua
+        yaba_icon = nil -- Needs to be initialized to be saved
+        yaba:loadAddon() -- in yabaConfig.lua
     end
 end
 
-function SBM:combatLogEvent()
+function yaba:combatLogEvent()
     local name, _ = UnitName("player");
     local eventType, _, _, eventSource, _, _, _, enemyName = select(2, CombatLogGetCurrentEventInfo())
     if not (eventSource == name) then
@@ -84,16 +82,16 @@ function SBM:combatLogEvent()
         amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand = select(12, CombatLogGetCurrentEventInfo())
     end
 
-    if (amount ~= nil and amount < SBM_threshold and SBM_threshold ~= 0) then
+    if (amount ~= nil and amount < yaba_threshold and yaba_threshold ~= 0) then
         do
             return
         end
     end
 
-    for i = 1, #SBM_eventList do
-        if (eventType == SBM_eventList[i].eventType and SBM_eventList[i].boolean and critical == true) then
-            newMaxCrit = SBM:addToCritList(spellName, amount);
-            if (SBM_onlyOnNewMaxCrits and not newMaxCrit) then
+    for i = 1, #yaba_eventList do
+        if (eventType == yaba_eventList[i].eventType and yaba_eventList[i].boolean and critical == true) then
+            newMaxCrit = yaba:addToCritList(spellName, amount);
+            if (yaba_onlyOnNewMaxCrits and not newMaxCrit) then
                 do
                     return
                 end
@@ -102,14 +100,14 @@ function SBM:combatLogEvent()
 
 
             if eventType == "SPELL_HEAL" then
-                output = SBM_outputHealMessage:gsub("(SN)", spellName):gsub("(SD)", amount):gsub("TN", enemyName)
+                output = yaba_outputHealMessage:gsub("(SN)", spellName):gsub("(SD)", amount):gsub("TN", enemyName)
             else
-                local returnString = SBM:mySuperRandomFunction(SBM_outputDamageMessage);
+                local returnString = yaba:mySuperRandomFunction(yaba_outputDamageMessage);
                 output = returnString:gsub("(SN)", spellName):gsub("(SD)", amount):gsub("TN", enemyName)
             end
-            for _, v in pairs(SBM_outputChannelList) do
+            for _, v in pairs(yaba_outputChannelList) do
                 if v == "Print" then
-                    print(SBM_color .. output)
+                    print(yaba_color .. output)
                 elseif (v == "Say" or v == "Yell") then
                     local inInstance, _ = IsInInstance()
                     if (inInstance) then
@@ -133,16 +131,16 @@ function SBM:combatLogEvent()
                         SendChatMessage(output, v);
                     end
                 elseif (v == "Whisper") then
-                    for _, w in pairs(SBM_whisperList) do
+                    for _, w in pairs(yaba_whisperList) do
                         SendChatMessage(output, "WHISPER", "COMMON", w)
                     end
                 elseif (v == "Sound DMG") then
                     if (eventType ~= "SPELL_HEAL") then
-                        SBM:playRandomSoundFromList(SBM_soundfileDamage)
+                        yaba:playRandomSoundFromList(yaba_soundfileDamage)
                     end
                 elseif (v == "Sound Heal") then
                     if (eventType == "SPELL_HEAL") then
-                        SBM:playRandomSoundFromList(SBM_soundfileHeal)
+                        yaba:playRandomSoundFromList(yaba_soundfileHeal)
                     end
                 elseif (v == "Do Train Emote") then
                     DoEmote("train");
@@ -154,7 +152,7 @@ function SBM:combatLogEvent()
     end
 end
 
-function SBM:mySuperRandomFunction(testString)
+function yaba:mySuperRandomFunction(testString)
   local array = { }
 
   for str in string.gmatch(testString, "[^;]+") do
@@ -170,36 +168,55 @@ function SBM:mySuperRandomFunction(testString)
   return array[math.random(1,counter)]
 end
 
-function SBM:bam_cmd(params)
-    cmd = params[1]
-    if (cmd == "help" or cmd == "") then
-        print(SBM_color .. "Possible parameters:")
-        print(SBM_color .. "list: lists highest crits of each spell")
-        print(SBM_color .. "report: report highest crits of each spell to channel list")
-        print(SBM_color .. "clear: delete list of highest crits")
-        print(SBM_color .. "config: Opens config page")
-    elseif (cmd == "list") then
-        SBM:listCrits();
-    elseif (cmd == "report") then
-        SBM:reportCrits();
-    elseif (cmd == "clear") then
-        SBM:clearCritList();
-    elseif (cmd == "config") then
-        -- For some reason, needs to be called twice to function correctly on first call
-        InterfaceOptionsFrame_OpenToCategory(yabaConfig.panel)
-        InterfaceOptionsFrame_OpenToCategory(yabaConfig.panel)
-    elseif (cmd == "test") then
-        print(SBM_color .. "Function not implemented")
-    else
-        print(SBM_color .. "Bam Error: Unknown command")
-    end
+function yaba:cmd(params)
+  cmd = params[1]
+  if (cmd == "" or cmd == nil or cmd == "help") then
+    print(yaba_color .. "Possible parameters:")
+    print(yaba_color .. "- list: Lists highest crits of each spell")
+    print(yaba_color .. "- report: Report highest crits of each spell to channel list")
+    print(yaba_color .. "- clear: Delete list of highest crits")
+    print(yaba_color .. "- config: Opens config page")
+    print(yaba_color .. "- addDmg: Adds a single sentence to the list of critical hits.")
+    print(yaba_color .. "- addHeal: Adds a single sentence to the list of critical heals.")
+    print(yaba_color .. "- rmDmg: Removes a single sentence from the list of critical hits.")
+    print(yaba_color .. "- rmHeal: Removes a single sentence from the list of critical heals.")
+    print(yaba_color .. "- clearDmg: Clears all sentences from the list of critical hits.")
+    print(yaba_color .. "- clearHeal: Clears all sentences from the list of critical heals.")
+    print(yaba_color .. "- verbose: If set to 'True', play a sound and print a message on every crit, if 'False' play only on new record.")
+  elseif (cmd == "list") then
+    yaba:listCrits();
+  elseif (cmd == "report") then
+    yaba:reportCrits();
+  elseif (cmd == "clear") then
+    yaba:clearCritList();
+  elseif (cmd == "config") then
+    -- For some reason, needs to be called twice to function correctly on first call
+    InterfaceOptionsFrame_OpenToCategory(yabaConfig.panel)
+    InterfaceOptionsFrame_OpenToCategory(yabaConfig.panel)
+  elseif ( cmd == "addDmg") then
+    print(yaba_color .. "Function not (yet) implemented: " .. cmd)
+  elseif ( cmd == "addHeal") then
+    print(yaba_color .. "Function not (yet) implemented: " .. cmd)
+  elseif ( cmd == "rmDmg") then
+    print(yaba_color .. "Function not (yet) implemented: " .. cmd)
+  elseif ( cmd == "rmHeal") then
+    print(yaba_color .. "Function not (yet) implemented: " .. cmd)
+  elseif ( cmd == "clearDmg") then
+    print(yaba_color .. "Function not (yet) implemented: " .. cmd)
+  elseif ( cmd == "clearHeal") then
+    print(yaba_color .. "Function not (yet) implemented: " .. cmd)
+  elseif ( cmd == "verbose") then
+    print(yaba_color .. "Function not (yet) implemented: " .. cmd)
+  else
+    print(yaba_color .. "I see you have no clue what you're doing here ;-)")
+  end
 end
 
-function SBM:playRandomSoundFromList(listOfFilesAsString)
-    SBM_soundFileList = {}
+function yaba:playRandomSoundFromList(listOfFilesAsString)
+    yaba_soundFileList = {}
     for arg in string.gmatch(listOfFilesAsString, "%S+") do
-        table.insert(SBM_soundFileList, arg)
+        table.insert(yaba_soundFileList, arg)
     end
-    local randomIndex = random(1, #SBM_soundFileList)
-    PlaySoundFile(SBM_soundFileList[randomIndex])
+    local randomIndex = random(1, #yaba_soundFileList)
+    PlaySoundFile(yaba_soundFileList[randomIndex])
 end
