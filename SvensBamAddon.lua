@@ -57,9 +57,9 @@ function SBM:eventHandler(_, event, arg1)
     if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 
         SBM:combatLogEvent()
-    elseif event == "ADDON_LOADED" and arg1 == "SvensBamAddon" then
+    elseif event == "ADDON_LOADED" and arg1 == "yaba" then
         SBM_icon = nil -- Needs to be initialized to be saved
-        SBM:loadAddon() -- in SvensBamAddonConfig.lua
+        SBM:loadAddon() -- in yabaConfig.lua
     end
 end
 
@@ -186,8 +186,8 @@ function SBM:bam_cmd(params)
         SBM:clearCritList();
     elseif (cmd == "config") then
         -- For some reason, needs to be called twice to function correctly on first call
-        InterfaceOptionsFrame_OpenToCategory(SvensBamAddonConfig.panel)
-        InterfaceOptionsFrame_OpenToCategory(SvensBamAddonConfig.panel)
+        InterfaceOptionsFrame_OpenToCategory(yabaConfig.panel)
+        InterfaceOptionsFrame_OpenToCategory(yabaConfig.panel)
     elseif (cmd == "test") then
         print(SBM_color .. "Function not implemented")
     else

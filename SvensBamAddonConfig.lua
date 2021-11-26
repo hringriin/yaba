@@ -39,11 +39,11 @@ function SBM:loadAddon()
     end
 
     if (SBM_soundfileDamage == nil) then
-        SBM_soundfileDamage = "Interface\\AddOns\\SvensBamAddon\\bam.ogg"
+        SBM_soundfileDamage = "Interface\\AddOns\\yaba\\bam.ogg"
     end
 
     if (SBM_soundfileHeal == nil) then
-        SBM_soundfileHeal = "Interface\\AddOns\\SvensBamAddon\\bam.ogg"
+        SBM_soundfileHeal = "Interface\\AddOns\\yaba\\bam.ogg"
     end
 
     local rgb = {
@@ -88,32 +88,32 @@ function SBM:loadAddon()
 
     --Good Guide https://github.com/tomrus88/BlizzardInterfaceCode/blob/master/Interface/FrameXML/InterfaceOptionsFrame.lua
     --Options Main Menu
-    SvensBamAddonConfig = {};
-    SvensBamAddonConfig.panel = CreateFrame("Frame", "SvensBamAddonConfig", UIParent);
-    SvensBamAddonConfig.panel.name = "Svens Bam Addon";
-    SvensBamAddonConfig.panel.title = SvensBamAddonConfig.panel:CreateFontString("GeneralOptionsDescription", "OVERLAY");
-    SvensBamAddonConfig.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
-    SvensBamAddonConfig.panel.title:SetPoint("TOPLEFT", 5, -5);
-    SvensBamAddonConfig.panel.title:SetJustifyH("LEFT")
+    yabaConfig = {};
+    yabaConfig.panel = CreateFrame("Frame", "yabaConfig", UIParent);
+    yabaConfig.panel.name = "Svens Bam Addon";
+    yabaConfig.panel.title = yabaConfig.panel:CreateFontString("GeneralOptionsDescription", "OVERLAY");
+    yabaConfig.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
+    yabaConfig.panel.title:SetPoint("TOPLEFT", 5, -5);
+    yabaConfig.panel.title:SetJustifyH("LEFT")
 
 
     --Channel Options SubMenu
-    SvensBamAddonChannelOptions = {}
-    SvensBamAddonChannelOptions.panel = CreateFrame("Frame", "SvensBamAddonChannelOptions");
-    SvensBamAddonChannelOptions.panel.name = "Channel options";
-    SvensBamAddonChannelOptions.panel.parent = "Svens Bam Addon"
-    SvensBamAddonChannelOptions.panel.okay = function()
+    yabaChannelOptions = {}
+    yabaChannelOptions.panel = CreateFrame("Frame", "yabaChannelOptions");
+    yabaChannelOptions.panel.name = "Channel options";
+    yabaChannelOptions.panel.parent = "Svens Bam Addon"
+    yabaChannelOptions.panel.okay = function()
         SBM:saveWhisperList()
         SBM:saveSoundfile()
     end
     SBM:populateChannelSubmenu(channelButtonList, channelList)
 
     --General Options SubMenu NEEDS TO BE LAST BECAUSE SLIDERS CHANGE FONTSTRINGS OF ALL MENUS
-    SvensBamAddonGeneralOptions = {}
-    SvensBamAddonGeneralOptions.panel = CreateFrame("Frame", "SvensBamAddonGeneralOptions");
-    SvensBamAddonGeneralOptions.panel.name = "General options";
-    SvensBamAddonGeneralOptions.panel.parent = "Svens Bam Addon"
-    SvensBamAddonGeneralOptions.panel.okay = function()
+    yabaGeneralOptions = {}
+    yabaGeneralOptions.panel = CreateFrame("Frame", "yabaGeneralOptions");
+    yabaGeneralOptions.panel.name = "General options";
+    yabaGeneralOptions.panel.parent = "Svens Bam Addon"
+    yabaGeneralOptions.panel.okay = function()
         SBM:saveDamageOutputList()
         SBM:saveHealOutputList()
         SBM:saveSoundfileDamage()
@@ -123,9 +123,9 @@ function SBM:loadAddon()
     SBM:populateGeneralSubmenu(eventButtonList, SBM_eventList, rgb)
 
     --Set order of Menus here
-    InterfaceOptions_AddCategory(SvensBamAddonConfig.panel);
-    InterfaceOptions_AddCategory(SvensBamAddonGeneralOptions.panel);
-    InterfaceOptions_AddCategory(SvensBamAddonChannelOptions.panel);
+    InterfaceOptions_AddCategory(yabaConfig.panel);
+    InterfaceOptions_AddCategory(yabaGeneralOptions.panel);
+    InterfaceOptions_AddCategory(yabaChannelOptions.panel);
 
     print(SBM_color .. "Svens Bam Addon loaded! Type /bam help for options!")
 end
@@ -144,18 +144,18 @@ function SBM:populateGeneralSubmenu(eventButtonList, SBM_eventList, rgb)
     local boxesPlaced = 0 -- increase after each edit box or check box placed
 
     -- Output Messages
-    SvensBamAddonGeneralOptions.panel.title = SvensBamAddonGeneralOptions.panel:CreateFontString("OutputDamageMessageDescription", "OVERLAY");
-    SvensBamAddonGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
-    SvensBamAddonGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
+    yabaGeneralOptions.panel.title = yabaGeneralOptions.panel:CreateFontString("OutputDamageMessageDescription", "OVERLAY");
+    yabaGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
+    yabaGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
     amountLinesWritten = amountLinesWritten + 1
 
     SBM:createOutputDamageMessageEditBox(boxHeight, editBoxWidth, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing))
     boxesPlaced = boxesPlaced + 1
     categoryCounter = categoryCounter + 1
 
-    SvensBamAddonGeneralOptions.panel.title = SvensBamAddonGeneralOptions.panel:CreateFontString("OutputHealMessageDescription", "OVERLAY");
-    SvensBamAddonGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
-    SvensBamAddonGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
+    yabaGeneralOptions.panel.title = yabaGeneralOptions.panel:CreateFontString("OutputHealMessageDescription", "OVERLAY");
+    yabaGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
+    yabaGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
     amountLinesWritten = amountLinesWritten + 1
 
     SBM:createOutputHealMessageEditBox(boxHeight, editBoxWidth, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing))
@@ -163,9 +163,9 @@ function SBM:populateGeneralSubmenu(eventButtonList, SBM_eventList, rgb)
 
     -- Damage Threshold
     categoryCounter = categoryCounter + 1
-    SvensBamAddonGeneralOptions.panel.title = SvensBamAddonGeneralOptions.panel:CreateFontString("ThresholdDescription", "OVERLAY");
-    SvensBamAddonGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
-    SvensBamAddonGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
+    yabaGeneralOptions.panel.title = yabaGeneralOptions.panel:CreateFontString("ThresholdDescription", "OVERLAY");
+    yabaGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
+    yabaGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
     amountLinesWritten = amountLinesWritten + 1
 
     SBM:createThresholdEditBox(-(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing))
@@ -173,9 +173,9 @@ function SBM:populateGeneralSubmenu(eventButtonList, SBM_eventList, rgb)
 
     -- Event Types to Trigger
     categoryCounter = categoryCounter + 1
-    SvensBamAddonGeneralOptions.panel.title = SvensBamAddonGeneralOptions.panel:CreateFontString("EventTypeDescription", "OVERLAY");
-    SvensBamAddonGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
-    SvensBamAddonGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
+    yabaGeneralOptions.panel.title = yabaGeneralOptions.panel:CreateFontString("EventTypeDescription", "OVERLAY");
+    yabaGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
+    yabaGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
     amountLinesWritten = amountLinesWritten + 1
 
     for i = 1, #SBM_eventList do
@@ -185,9 +185,9 @@ function SBM:populateGeneralSubmenu(eventButtonList, SBM_eventList, rgb)
 
     -- Trigger Options
     categoryCounter = categoryCounter + 1
-    SvensBamAddonGeneralOptions.panel.title = SvensBamAddonGeneralOptions.panel:CreateFontString("OnlyOnMaxCritsDescription", "OVERLAY");
-    SvensBamAddonGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
-    SvensBamAddonGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
+    yabaGeneralOptions.panel.title = yabaGeneralOptions.panel:CreateFontString("OnlyOnMaxCritsDescription", "OVERLAY");
+    yabaGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
+    yabaGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
     amountLinesWritten = amountLinesWritten + 1
 
     SBM:createTriggerOnlyOnCritRecordCheckBox(1, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing))
@@ -195,9 +195,9 @@ function SBM:populateGeneralSubmenu(eventButtonList, SBM_eventList, rgb)
 
     -- Minimap Button
     categoryCounter = categoryCounter + 1
-    SvensBamAddonGeneralOptions.panel.title = SvensBamAddonGeneralOptions.panel:CreateFontString("OtherOptionsDescription", "OVERLAY");
-    SvensBamAddonGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
-    SvensBamAddonGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
+    yabaGeneralOptions.panel.title = yabaGeneralOptions.panel:CreateFontString("OtherOptionsDescription", "OVERLAY");
+    yabaGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
+    yabaGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
     amountLinesWritten = amountLinesWritten + 1
 
     SBM:createMinimapShowOptionCheckBox(1, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing))
@@ -206,13 +206,13 @@ function SBM:populateGeneralSubmenu(eventButtonList, SBM_eventList, rgb)
 
     -- Color changer
     yOffSet = 3
-    SvensBamAddonGeneralOptions.panel.title = SvensBamAddonGeneralOptions.panel:CreateFontString("FontColorDescription", "OVERLAY");
-    SvensBamAddonGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
-    SvensBamAddonGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
+    yabaGeneralOptions.panel.title = yabaGeneralOptions.panel:CreateFontString("FontColorDescription", "OVERLAY");
+    yabaGeneralOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
+    yabaGeneralOptions.panel.title:SetPoint("TOPLEFT", 5, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing));
     amountLinesWritten = amountLinesWritten + 1
     amountLinesWritten = amountLinesWritten + 1 --Another Time, because the Sliders have on line above
     for i = 1, 3 do
-        SBM:createColorSlider(i, SvensBamAddonGeneralOptions.panel, rgb, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing))
+        SBM:createColorSlider(i, yabaGeneralOptions.panel, rgb, -(baseYOffSet + categoryCounter * categoryPadding + amountLinesWritten * lineHeight + boxesPlaced * boxSpacing))
     end
     categoryCounter = categoryCounter + 1
 
@@ -220,7 +220,7 @@ function SBM:populateGeneralSubmenu(eventButtonList, SBM_eventList, rgb)
 end
 
 function SBM:createEventTypeCheckBoxes(i, x, y, eventButtonList, SBM_eventList)
-    local checkButton = CreateFrame("CheckButton", "SvensBamAddon_EventTypeCheckButton" .. i, SvensBamAddonGeneralOptions.panel, "UICheckButtonTemplate")
+    local checkButton = CreateFrame("CheckButton", "yaba_EventTypeCheckButton" .. i, yabaGeneralOptions.panel, "UICheckButtonTemplate")
     eventButtonList[i] = checkButton
     checkButton:ClearAllPoints()
     checkButton:SetPoint("TOPLEFT", x * 32, y)
@@ -243,7 +243,7 @@ function SBM:createEventTypeCheckBoxes(i, x, y, eventButtonList, SBM_eventList)
 end
 
 function SBM:createOutputDamageMessageEditBox(height, width, y)
-    outputDamageMessageEditBox = SBM:createEditBox("OutputDamageMessage", SvensBamAddonGeneralOptions.panel, height, width)
+    outputDamageMessageEditBox = SBM:createEditBox("OutputDamageMessage", yabaGeneralOptions.panel, height, width)
     outputDamageMessageEditBox:SetPoint("TOPLEFT", 40, y)
     outputDamageMessageEditBox:Insert(SBM_outputDamageMessage)
     outputDamageMessageEditBox:SetCursorPosition(0)
@@ -267,7 +267,7 @@ function SBM:createOutputDamageMessageEditBox(height, width, y)
 end
 
 function SBM:createOutputHealMessageEditBox(height, width, y)
-    outputHealMessageEditBox = SBM:createEditBox("OutputHealMessage", SvensBamAddonGeneralOptions.panel, height, width)
+    outputHealMessageEditBox = SBM:createEditBox("OutputHealMessage", yabaGeneralOptions.panel, height, width)
     outputHealMessageEditBox:SetPoint("TOPLEFT", 40, y)
     outputHealMessageEditBox:Insert(SBM_outputHealMessage)
     outputHealMessageEditBox:SetCursorPosition(0)
@@ -291,7 +291,7 @@ function SBM:createOutputHealMessageEditBox(height, width, y)
 end
 
 function SBM:createThresholdEditBox(y)
-    thresholdEditBox = SBM:createEditBox("ThresholdEditBox", SvensBamAddonGeneralOptions.panel, 32, 400)
+    thresholdEditBox = SBM:createEditBox("ThresholdEditBox", yabaGeneralOptions.panel, 32, 400)
     thresholdEditBox:SetPoint("TOPLEFT", 40, y)
     thresholdEditBox:Insert(SBM_threshold)
     thresholdEditBox:SetCursorPosition(0)
@@ -315,7 +315,7 @@ function SBM:createThresholdEditBox(y)
 end
 
 function SBM:createTriggerOnlyOnCritRecordCheckBox(x, y)
-    local checkButton = CreateFrame("CheckButton", "OnlyOnMaxCritCheckBox", SvensBamAddonGeneralOptions.panel, "UICheckButtonTemplate")
+    local checkButton = CreateFrame("CheckButton", "OnlyOnMaxCritCheckBox", yabaGeneralOptions.panel, "UICheckButtonTemplate")
     checkButton:ClearAllPoints()
     checkButton:SetPoint("TOPLEFT", x * 32, y)
     checkButton:SetSize(32, 32)
@@ -336,7 +336,7 @@ function SBM:createTriggerOnlyOnCritRecordCheckBox(x, y)
 end
 
 function SBM:createMinimapShowOptionCheckBox(x, y)
-    local checkButton = CreateFrame("CheckButton", "MinimapShowOptionButtonCheckBox", SvensBamAddonGeneralOptions.panel, "UICheckButtonTemplate")
+    local checkButton = CreateFrame("CheckButton", "MinimapShowOptionButtonCheckBox", yabaGeneralOptions.panel, "UICheckButtonTemplate")
     checkButton:ClearAllPoints()
     checkButton:SetPoint("TOPLEFT", x * 32, y)
     checkButton:SetSize(32, 32)
@@ -364,19 +364,19 @@ function SBM:createMinimapShowOptionCheckBox(x, y)
 end
 
 function SBM:populateChannelSubmenu(channelButtonList, channelList)
-    SvensBamAddonChannelOptions.panel.title = SvensBamAddonChannelOptions.panel:CreateFontString("OutputChannelDescription", "OVERLAY");
-    SvensBamAddonChannelOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
-    SvensBamAddonChannelOptions.panel.title:SetPoint("TOPLEFT", 5, -5);
+    yabaChannelOptions.panel.title = yabaChannelOptions.panel:CreateFontString("OutputChannelDescription", "OVERLAY");
+    yabaChannelOptions.panel.title:SetFont(GameFontNormal:GetFont(), 14, "NONE");
+    yabaChannelOptions.panel.title:SetPoint("TOPLEFT", 5, -5);
     -- Checkboxes channels and Edit Box for whispers
     for i = 1, #channelList do
         SBM:createCheckButtonChannel(i, 1, i, channelButtonList, channelList)
     end
-    SBM:createResetChannelListButton(SvensBamAddonChannelOptions.panel, channelList, channelButtonList)
+    SBM:createResetChannelListButton(yabaChannelOptions.panel, channelList, channelButtonList)
 end
 
 function SBM:createCheckButtonChannel(i, x, y, channelButtonList, channelList)
     local YOffset = y * -24
-    local checkButton = CreateFrame("CheckButton", "SvensBamAddon_ChannelCheckButton" .. i, SvensBamAddonChannelOptions.panel, "UICheckButtonTemplate")
+    local checkButton = CreateFrame("CheckButton", "yaba_ChannelCheckButton" .. i, yabaChannelOptions.panel, "UICheckButtonTemplate")
     channelButtonList[i] = checkButton
     checkButton:ClearAllPoints()
     checkButton:SetPoint("TOPLEFT", x * 32, YOffset)
@@ -410,7 +410,7 @@ function SBM:createCheckButtonChannel(i, x, y, channelButtonList, channelList)
 
     -- Create Edit Box for whispers
     if (channelList[i] == "Whisper") then
-        whisperFrame = SBM:createEditBox("WhisperList", SvensBamAddonChannelOptions.panel, 32, 400)
+        whisperFrame = SBM:createEditBox("WhisperList", yabaChannelOptions.panel, 32, 400)
         whisperFrame:SetPoint("TOP", 50, -24 * y)
         for _, v in pairs(SBM_whisperList) do
             whisperFrame:Insert(v .. " ")
@@ -444,7 +444,7 @@ function SBM:createCheckButtonChannel(i, x, y, channelButtonList, channelList)
         local soundfileDamageFrameXOffset = 50
         local soundfileDamageFrameHeight = 32
         local soundfileDamageFrameWidth = 400
-        soundfileDamageFrame = SBM:createEditBox("SoundfileDamage", SvensBamAddonChannelOptions.panel, soundfileDamageFrameHeight, soundfileDamageFrameWidth)
+        soundfileDamageFrame = SBM:createEditBox("SoundfileDamage", yabaChannelOptions.panel, soundfileDamageFrameHeight, soundfileDamageFrameWidth)
         soundfileDamageFrame:SetPoint("TOP", soundfileDamageFrameXOffset, YOffset)
 
         soundfileDamageFrame:Insert(SBM_soundfileDamage)
@@ -472,7 +472,7 @@ function SBM:createCheckButtonChannel(i, x, y, channelButtonList, channelList)
             GameTooltip:Hide()
         end)
         local resetSoundfileButtonWidth = 56
-        SBM:createResetSoundfileDamageButton(SvensBamAddonChannelOptions.panel, resetSoundfileButtonWidth, soundfileDamageFrameWidth / 2 + soundfileDamageFrameXOffset + resetSoundfileButtonWidth / 2, YOffset, soundfileDamageFrameHeight)
+        SBM:createResetSoundfileDamageButton(yabaChannelOptions.panel, resetSoundfileButtonWidth, soundfileDamageFrameWidth / 2 + soundfileDamageFrameXOffset + resetSoundfileButtonWidth / 2, YOffset, soundfileDamageFrameHeight)
     end
 
     -- Create Edit Box for Heal Soundfile and reset button
@@ -480,7 +480,7 @@ function SBM:createCheckButtonChannel(i, x, y, channelButtonList, channelList)
         local soundfileHealFrameXOffset = 50
         local soundfileHealFrameHeight = 32
         local soundfileHealFrameWidth = 400
-        soundfileHealFrame = SBM:createEditBox("SoundfileHeal", SvensBamAddonChannelOptions.panel, soundfileHealFrameHeight, soundfileHealFrameWidth)
+        soundfileHealFrame = SBM:createEditBox("SoundfileHeal", yabaChannelOptions.panel, soundfileHealFrameHeight, soundfileHealFrameWidth)
         soundfileHealFrame:SetPoint("TOP", soundfileHealFrameXOffset, YOffset)
 
         soundfileHealFrame:Insert(SBM_soundfileHeal)
@@ -508,7 +508,7 @@ function SBM:createCheckButtonChannel(i, x, y, channelButtonList, channelList)
             GameTooltip:Hide()
         end)
         local resetSoundfileButtonWidth = 56
-        SBM:createResetSoundfileHealButton(SvensBamAddonChannelOptions.panel, resetSoundfileButtonWidth, soundfileHealFrameWidth / 2 + soundfileHealFrameXOffset + resetSoundfileButtonWidth / 2, YOffset, soundfileHealFrameHeight)
+        SBM:createResetSoundfileHealButton(yabaChannelOptions.panel, resetSoundfileButtonWidth, soundfileHealFrameWidth / 2 + soundfileHealFrameXOffset + resetSoundfileButtonWidth / 2, YOffset, soundfileHealFrameHeight)
     end
 end
 
@@ -520,7 +520,7 @@ function SBM:createResetSoundfileDamageButton(parentFrame, resetSoundfileButtonW
     resetChannelListButton:SetSize(resetSoundfileButtonWidth, resetSoundfileButtonHeight)
     resetChannelListButton:SetText("Reset")
     resetChannelListButton:SetScript("OnClick", function(...)
-        SBM_soundfileDamage = "Interface\\AddOns\\SvensBamAddon\\bam.ogg"
+        SBM_soundfileDamage = "Interface\\AddOns\\yaba\\bam.ogg"
         soundfileDamageFrame:SetText(SBM_soundfileDamage)
     end)
 end
@@ -533,7 +533,7 @@ function SBM:createResetSoundfileHealButton(parentFrame, resetSoundfileButtonWid
     resetChannelListButton:SetSize(resetSoundfileButtonWidth, resetSoundfileButtonHeight)
     resetChannelListButton:SetText("Reset")
     resetChannelListButton:SetScript("OnClick", function(...)
-        SBM_soundfileHeal = "Interface\\AddOns\\SvensBamAddon\\bam.ogg"
+        SBM_soundfileHeal = "Interface\\AddOns\\yaba\\bam.ogg"
         soundfileHealFrame:SetText(SBM_soundfileHeal)
     end)
 end
@@ -649,8 +649,8 @@ function SBM:createMinimapButton()
 
         { text = "Open config", isNotRadio = true, notCheckable = true,
           func = function()
-              InterfaceOptionsFrame_OpenToCategory(SvensBamAddonConfig.panel)
-              InterfaceOptionsFrame_OpenToCategory(SvensBamAddonConfig.panel)
+              InterfaceOptionsFrame_OpenToCategory(yabaConfig.panel)
+              InterfaceOptionsFrame_OpenToCategory(yabaConfig.panel)
           end
         },
         { text = "Close menu", isNotRadio = true, notCheckable = true },
@@ -661,7 +661,7 @@ function SBM:createMinimapButton()
         type = "data source",
         label = "SBM_MinimapButton",
         text = "SBM Minimap Icon",
-        icon = "Interface\\AddOns\\SvensBamAddon\\textures\\Bam_Icon",
+        icon = "Interface\\AddOns\\yaba\\textures\\Bam_Icon",
         OnClick = function(_, button)
             if button == "LeftButton" or button == "RightButton" then
                 lib.EasyMenu(menuList, menuFrame, "LibDBIcon10_SBM_dataObject", 0, 0, "MENU");
@@ -680,7 +680,7 @@ function SBM:setPanelTexts()
     OutputDamageMessageDescription:SetText(SBM_color .. "Output Message Damage")
     OutputHealMessageDescription:SetText(SBM_color .. "Output Message Heal")
     EventTypeDescription:SetText(SBM_color .. "Event Types to Trigger")
-    SvensBamAddonGeneralOptions.panel.title:SetText(SBM_color .. "Change color of Font")
+    yabaGeneralOptions.panel.title:SetText(SBM_color .. "Change color of Font")
     FontColorDescription:SetText(SBM_color .. "Change color of Font")
     OutputChannelDescription:SetText(SBM_color .. "Output Channel")
     ThresholdDescription:SetText(SBM_color .. "Least amount of damage/heal to trigger bam:")
