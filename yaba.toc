@@ -1,7 +1,7 @@
 ## Interface: 20502
 ## Title: |cFFebdbb2(|cFF458588Y|r)et (|cFF458588A|r)nother (|cFF458588B|r)am (|cFF458588A|r)ddon|r
 ## Author: barzh
-## Version: 20211126
+## Version: 20211201
 ## Notes: Plays a sound if you do critical damage.
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
